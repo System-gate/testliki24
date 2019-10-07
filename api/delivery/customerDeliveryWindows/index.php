@@ -14,6 +14,14 @@ $CustomerDeliveryWindows = new CustomerDeliveryWindows();
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     if(!empty($data['currentDate']) && !empty($data['horizon'])){
-        exit(json_encode(array_values($CustomerDeliveryWindows->getCustomerDeliveryWindows($data['currentDate'], $data['horizon']))));
+        $customerDeliveryWindowsArray = $CustomerDeliveryWindows->getCustomerDeliveryWindows($data['currentDate'], $data['horizon']);
+        if(!empty( $customerDeliveryWindowsArray['error'])){
+            http_response_code(400);
+            die(json_encode( $customerDeliveryWindowsArray));
+        }
+        else {
+            http_response_code(200);
+            exit(json_encode(array_values( $customerDeliveryWindowsArray)));
+        }
     }
 }
