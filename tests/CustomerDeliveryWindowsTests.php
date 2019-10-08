@@ -15,18 +15,21 @@ class CustomerDeliveryWindowsTests extends TestCase
         $CustomerDeliveryWindows = new CustomerDeliveryWindows();
         $date = new DateTime('2019-08-10 23:59:00');
         $testDate = $date->format('Y-m-d H:i:s');
-        $this->assertNotContains(['name' => 'Express delivery', 'description' => 'lorem ipsum', 'start' => '0000-00-00 07:00:00', 'finish' => '0000-00-00 21:00:00', 'price' => 100, 'type' => 'express', 'available' => 1], $CustomerDeliveryWindows->getCustomerDeliveryWindows($testDate, 2));
+        $horizon = 2;
+        $this->assertNotContains(['name' => 'Express delivery', 'description' => 'lorem ipsum', 'start' => '0000-00-00 07:00:00', 'finish' => '0000-00-00 21:00:00', 'price' => 100, 'type' => 'express', 'available' => 1], $CustomerDeliveryWindows->getCustomerDeliveryWindows($testDate, $horizon));
     }
 
     public function testDBError(){
         $CustomerDeliveryWindows = new CustomerDeliveryWindows();
-        $this->assertArrayHasKey('error', $CustomerDeliveryWindows->getCustomerDeliveryWindows(strtotime('2019-08-10 23:59:00'), 2));
+        $horizon = 2;
+        $this->assertArrayHasKey('error', $CustomerDeliveryWindows->getCustomerDeliveryWindows(strtotime('2019-08-10 23:59:00'), $horizon));
     }
 
     public function testType(){
         $CustomerDeliveryWindows = new CustomerDeliveryWindows();
         $date = new DateTime('2019-08-10 23:59:00');
         $testDate = $date->format('Y-m-d H:i:s');
-        $this->assertContainsOnly('array', $CustomerDeliveryWindows->getCustomerDeliveryWindows($testDate, 2));
+        $horizon = 2;
+        $this->assertContainsOnly('array', $CustomerDeliveryWindows->getCustomerDeliveryWindows($testDate, $horizon));
     }
 }
